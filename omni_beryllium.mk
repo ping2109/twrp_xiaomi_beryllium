@@ -27,6 +27,9 @@ $(call inherit-product, vendor/omni/config/common.mk)
 # Inherit from hardware-specific part of the product configuration
 $(call inherit-product, device/xiaomi/beryllium/device.mk)
 
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.keystore=sdm845
+
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := beryllium
 PRODUCT_NAME := omni_beryllium

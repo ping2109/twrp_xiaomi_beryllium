@@ -132,6 +132,13 @@ TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES := \
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 
+# Ramdisk
+BOARD_ROOT_EXTRA_SYMLINKS := \
+    /mnt/vendor/persist:/persist \
+    /vendor/bt_firmware:/bt_firmware \
+    /vendor/dsp:/dsp \
+    /vendor/firmware_mnt:/firmware
+
 # Recovery
 BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
@@ -142,6 +149,8 @@ LZMA_RAMDISK_TARGETS := recovery
 TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
 TARGET_OTA_ASSERT_DEVICE := beryllium
 RECOVERY_SDCARD_ON_DATA := true
+RECOVERY_GRAPHICS_USE_LINELENGTH  := true
+RECOVERY_VARIANT := twrp
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
 TW_EXTRA_LANGUAGES := true
@@ -154,6 +163,13 @@ TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 TW_Y_OFFSET := 86
 TW_H_OFFSET := -86
+TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone1/temp
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
+TW_EXCLUDE_TWRPAPP := true
+BOARD_SUPPRESS_SECURE_ERASE := true
+TW_NEW_ION_HEAP := true
+TW_INCLUDE_FB2PNG := true
+TWRP_NEW_THEME := true
 
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
