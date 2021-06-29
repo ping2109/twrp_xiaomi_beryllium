@@ -17,16 +17,21 @@
 # Release name
 PRODUCT_RELEASE_NAME := beryllium
 
-$(call inherit-product, build/target/product/embedded.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
+
+# Inherit from hardware-specific part of the product configuration
+$(call inherit-product, device/xiaomi/beryllium/device.mk)
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := beryllium
 PRODUCT_NAME := omni_beryllium
 PRODUCT_BRAND := Xiaomi
-PRODUCT_MODEL := POCOPHONE F1
+PRODUCT_MODEL := POCO F1
 PRODUCT_MANUFACTURER := Xiaomi
 
 # enable stock zip packages flash

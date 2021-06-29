@@ -51,23 +51,39 @@ TARGET_NO_BOOTLOADER := true
 TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TARGET_HW_DISK_ENCRYPTION := true
 TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
-TW_INCLUDE_FBE := true
+TW_INCLUDE_RESETPROP := true
+BOARD_USES_QCOM_FBE_DECRYPTION := true
 
 # Kernel
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xA84000 androidboot.hardware=qcom androidboot.console=ttyMSM0 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 service_locator.enable=1 swiotlb=2048 androidboot.configfs=true loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE :=  \
+    console=ttyMSM0,115200n8 \
+	earlycon=msm_geni_serial,0xA84000 \
+	androidboot.hardware=qcom \
+	androidboot.console=ttyMSM0 \
+	video=vfb:640x400,bpp=32,memsize=3072000 \
+	msm_rtb.filter=0x237 \
+	ehci-hcd.park=3 \
+	lpm_levels.sleep_disabled=1 \
+	service_locator.enable=1 \
+	swiotlb=2048 \
+	androidboot.configfs=true \
+	loop.max_part=7 \
+	androidboot.usbcontroller=a600000.dwc3 \
+	androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET     := 0x01000000
 
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/Image.gz-dtb
-
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery.fstab
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 
 # Platform
-TARGET_BOARD_PLATFORM := sdm660
+TARGET_BOARD_PLATFORM := sdm845
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno630
+TARGET_SUPPORTS_64_BIT_APPS := true
+TARGET_USES_HARDWARE_QCOM_BOOTCTRL := true
+QCOM_BOARD_PLATFORMS := sdm845
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 262144
@@ -84,6 +100,34 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
+TARGET_RECOVERY_DEVICE_MODULES := \
+    android.hidl.base@1.0 \
+    android.hardware.boot@1.0 \
+    ashmemd \
+    ashmemd_aidl_interface-cpp \
+    libashmemd_client \
+    libcap \
+    libicui18n \
+    libion \
+    libicuuc \
+    libpcrecpp \
+    libxml2 \
+    tzdata
+
+TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES := \
+    $(TARGET_OUT_EXECUTABLES)/ashmemd
+
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES := \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.base@1.0.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libcap.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libicui18n.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libicuuc.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libpcrecpp.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
+
 # Workaround for error copying vendor files to recovery ramdisk
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
@@ -92,31 +136,29 @@ TARGET_COPY_OUT_VENDOR := vendor
 BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 AB_OTA_UPDATER := false
-#LZMA_RAMDISK_TARGETS := recovery
+LZMA_RAMDISK_TARGETS := recovery
 
 # TWRP specific build flags
+TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
 TARGET_OTA_ASSERT_DEVICE := beryllium
 RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
-TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_EXTRA_LANGUAGES := true
-TW_DEFAULT_LANGUAGE := en
 TW_INCLUDE_NTFS_3G := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_MAX_BRIGHTNESS := 4095
-TW_DEFAULT_BRIGHTNESS := 1950
+TW_MAX_BRIGHTNESS := 255
 TW_THEME := portrait_hdpi
 TW_SCREEN_BLANK_ON_BOOT := true
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 TW_Y_OFFSET := 80
 TW_H_OFFSET := -80
-TW_USE_TOOLBOX := true
 
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
 PLATFORM_VERSION := 16.1.0
+VENDOR_SECURITY_PATCH :=  2099-12-31
 
 # exFAT FS Support
 TW_INCLUDE_FUSE_EXFAT := true

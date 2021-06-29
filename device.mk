@@ -1,5 +1,5 @@
 #
-# Copyright 2017 The Android Open Source Project
+# Copyright 2020 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,25 @@
 # limitations under the License.
 #
 
-PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/omni_beryllium.mk
 
-COMMON_LUNCH_CHOICES := \
-    omni_beryllium-eng
+# Inherit from the common Open Source product configuration
+$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
+
+# define hardware platform
+PRODUCT_PLATFORM := sdm845
+
+# qcom standard decryption
+PRODUCT_PACKAGES += \
+    qcom_decrypt \
+    qcom_decrypt_fbe
+
+# Resolution
+TARGET_SCREEN_HEIGHT := 2246
+TARGET_SCREEN_WIDTH := 1080
+
+# tzdata
+PRODUCT_PACKAGES += \
+    tzdata_twrp
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.build.security_patch=2099-12-31
